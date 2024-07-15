@@ -12,7 +12,7 @@
 
     <div class="flex flex-row justify-center flex-grow">
       <div
-          class="prose mr-4 p-8 bg-white rounded-md min-w-[20ch] max-w-[30ch] flex flex-col bg-amber-100"
+          class="prose mr-4 p-8 rounded-md min-w-[20ch] max-w-[30ch] flex flex-col bg-amber-100"
       >
         <h3 class="text-center text-orange-800 text-xl">Chapters</h3>
         <div
@@ -39,7 +39,7 @@
         </div>
       </div>
 
-      <div class="prose p-12 bg-white rounded-md w-[65ch] bg-amber-100">
+      <div class="prose p-12 rounded-md w-[65ch] bg-amber-100">
         <NuxtPage />
       </div>
     </div>

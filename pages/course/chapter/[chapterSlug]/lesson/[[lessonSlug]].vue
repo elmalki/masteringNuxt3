@@ -1,4 +1,6 @@
 <script setup lang="ts">
+//import {useLocalStorage} from "@vueuse/core";
+
 const course = useCourse();
 const route = useRoute();
 const chapter = computed(() => {
@@ -7,11 +9,31 @@ const chapter = computed(() => {
 const lesson = computed(() => {
   return chapter.value.lessons.find((lesson) => lesson.slug == route.params.lessonSlug)
 })
-const title = computed(()=>{
-  return chapter.value.title+"-"+lesson.value.title
+const title = computed(() => {
+  return chapter.value.title + "-" + lesson.value.title
 })
+//old useState() but the drawback is when refreshing the data is lost
+const progress = useLocalStorage('prgress', () => {
+  return [];
+})
+const isLessonCompleted = computed(() => {
+  if (!progress.value[chapter.value.number - 1]) {
+    return false
+  }
+  if (!progress.value[chapter.value.number - 1][lesson.value.number - 1]) {
+    return false
+  }
+  return progress.value[chapter.value.number - 1][lesson.value.number - 1]
+})
+
+const toggleComplete = () => {
+  if (!progress.value[chapter.value.number - 1]) {
+    progress.value[chapter.value.number - 1] = []
+  }
+  progress.value[chapter.value.number - 1][lesson.value.number - 1] = !isLessonCompleted.value
+}
 useHead({
-  title:title
+  title: title
 })
 </script>
 <template>
@@ -32,15 +54,27 @@ useHead({
         </NuxtLink>
         <NuxtLink
             v-if="lesson.downloadUrl"
-            class="font-normal text-blue-700 rounded bg-blue-400 hover:bg-blue-500 hover:text-blue-900 p-3 text-md"
+            class="font-normal text-blue-700 rounded bg-blue-300 hover:bg-blue-200 hover:text-blue-700 p-3 text-md"
             :to="lesson.downloadUrl"
         >
           Download Video
         </NuxtLink>
       </div>
-      <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" />
+      <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId"/>
     </div>
     <p class="text-justify">{{ lesson.text }}</p>
+    <!--lesson-complete-button v-model="progress"></lesson-complete-button-->
+    <!--client-only >
+    fix hydration problem
+      <template #fallback>
+
+        <p class="text-red-500">Loading data...</p>
+      </template>
+      <lesson-complete-button :model-value="isLessonCompleted"
+                              @update:model-value="toggleComplete"></lesson-complete-button>
+    </client-only-->
+    <lesson-complete-button :model-value="isLessonCompleted"
+                            @update:model-value="toggleComplete"></lesson-complete-button>
   </div>
 </template>
 
