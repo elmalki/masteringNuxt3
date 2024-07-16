@@ -74,7 +74,7 @@ useHead({
                               @update:model-value="toggleComplete"></lesson-complete-button>
     </client-only-->
     <lesson-complete-button :model-value="isLessonCompleted"
-                            @update:model-value="toggleComplete"></lesson-complete-button>
+                            @update:model-value="throw createError('Could not update!');"></lesson-complete-button>
   </div>
 </template>
 

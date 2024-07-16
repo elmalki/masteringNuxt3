@@ -40,17 +40,33 @@
       </div>
 
       <div class="prose p-12 rounded-md w-[65ch] bg-amber-100">
-        <NuxtPage />
+        <NuxtErrorBoundary>
+          <NuxtPage/>
+          <template #error="{error}">
+            <AlertErrorComponent>{{error}}</AlertErrorComponent>
+            <button class="cursor-pointer bg-gray-500 hover:bg-gray-400 text-white font-bold p-3 rounded mt-3" @click="resetError(error)">Reset Error</button>
+          </template>
+        </NuxtErrorBoundary>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-const { chapters } = useCourse();
+const {chapters} = useCourse();
+const resetError = async (error)=>{
+  /*
+  throw createError({
+  fatal:true,
+  message:'error 500 like server side'
+  })
+  * */
+  await navigateTo('/course/chapter/1-chapter-1/lesson/1-introduction-to-typescript-with-vue-js-3');
+  error.value = null
+}
 </script>
 <style scoped>
-  /*.router-link-active{
-    @apply text-orange-500;
-  }*/
+/*.router-link-active{
+  @apply text-orange-500;
+}*/
 </style>

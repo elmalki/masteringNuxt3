@@ -1,5 +1,14 @@
 import courseData from './courseData'
-
+type lesson = {
+    number:Number;
+    title:String;
+    slug:String;
+    downloadUrl:String;
+    videoId:Number;
+    text:String;
+    sourceUrl?:String;
+    path:String
+}
 export const useCourse = () => {
     return {
         ...courseData,

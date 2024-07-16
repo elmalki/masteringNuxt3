@@ -6,5 +6,9 @@
   </div>
 </template>
 <script setup lang="ts">
-
+/*
+using composable to use layouts
+definePageMeta({
+  layout:'admin-template'
+})*/
 </script>
