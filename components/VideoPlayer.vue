@@ -1,7 +1,7 @@
 <template>
   <iframe
-      width="550"
-      height="415"
+      width="415"
+      height="315"
       :src="`https://player.vimeo.com/video/${props.videoId}`"
       title="Video player"
       frameborder="0"
