@@ -3,22 +3,50 @@
 
 const course = useCourse();
 const route = useRoute();
+//this is the best way we should remove the otherone
+definePageMeta({
+  middleware: [ async function ({params}, from) {
+    const course = useCourse();
+    const chapter = course.chapters.find((chapter) => chapter.slug == params.chapterSlug)
+    if (!chapter) {
+      return abortNavigation({
+        statusCode: 404,
+        message: 'Chapter not found via validator'
+      })
+    }
+    const lesson = chapter.lessons.find((lesson) => lesson.slug == params.lessonSlug)
+    if (!lesson) {
+      //abortNavigation instead of createError
+      return abortNavigation({
+        statusCode: 404,
+        message: 'Lesson not found via validator'
+      })
+    }
+
+    return true;
+  },'auth'],
+})
+
 const chapter = computed(() => {
   return course.chapters.find((chapter) => chapter.slug == route.params.chapterSlug)
 })
-if(!chapter.value){
+
+//bad method
+if (!chapter.value) {
   throw createError({
-    statusCode:404,
-    message:'Chapter not found'
+    statusCode: 404,
+    message: 'Chapter not found'
   })
 }
 const lesson = computed(() => {
   return chapter.value.lessons.find((lesson) => lesson.slug == route.params.lessonSlug)
 })
-if(!lesson.value){
+
+//bad method
+if (!lesson.value) {
   throw createError({
-    statusCode:404,
-    message:'Lesson not found'
+    statusCode: 404,
+    message: 'Lesson not found'
   })
 }
 const title = computed(() => {
@@ -57,18 +85,12 @@ useHead({
       <h1 class="inline-block bg-amber-200 text-4xl text-amber-600 underline decoration-amber-400">
         {{ lesson.title }}</h1>
       <div class="flex mt-2 mb-8 space-x-2">
-        <NuxtLink
-            v-if="lesson.sourceUrl"
-            class="font-normal text-gray-500 text-md"
-            :to="lesson.sourceUrl"
-        >
+        <NuxtLink v-if="lesson.sourceUrl" class="font-normal text-gray-500 text-md" :to="lesson.sourceUrl">
           Download Source Code
         </NuxtLink>
-        <NuxtLink
-            v-if="lesson.downloadUrl"
-            class="font-normal text-blue-700 rounded bg-blue-300 hover:bg-blue-200 hover:text-blue-700 p-3 text-md"
-            :to="lesson.downloadUrl"
-        >
+        <NuxtLink v-if="lesson.downloadUrl"
+                  class="font-normal text-blue-700 rounded bg-blue-300 hover:bg-blue-200 hover:text-blue-700 p-3 text-md"
+                  :to="lesson.downloadUrl">
           Download Video
         </NuxtLink>
       </div>
@@ -82,13 +104,11 @@ useHead({
 
         <p class="text-red-500">Loading data...</p>
       </template>
-      <lesson-complete-button :model-value="isLessonCompleted"
-                              @update:model-value="toggleComplete"></lesson-complete-button>
-    </client-only-->
+<lesson-complete-button :model-value="isLessonCompleted" @update:model-value="toggleComplete"></lesson-complete-button>
+</client-only-->
     <lesson-complete-button :model-value="isLessonCompleted"
                             @update:model-value="throw createError('Could not update!');"></lesson-complete-button>
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
