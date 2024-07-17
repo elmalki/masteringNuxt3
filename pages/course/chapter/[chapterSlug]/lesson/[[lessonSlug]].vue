@@ -3,12 +3,51 @@
 
 const course = useCourse();
 const route = useRoute();
+//this is the best way we should remove the otherone
+definePageMeta({
+  middleware:function({params},from){
+    const course = useCourse();
+    const chapter = course.chapters.find((chapter)=>chapter.slug==params.chapterSlug)
+    if(!chapter){
+        return abortNavigation({
+          statusCode:404,
+          message:'Chapter not found via validator'
+        })
+    }
+    const lesson = chapter.lessons.find((lesson)=>lesson.slug==params.lessonSlug)
+    if(!lesson){
+      //abortNavigation instead of createError
+        return abortNavigation({
+          statusCode:404,
+          message:'Lesson not found via validator'
+        })
+    }
+    return true;
+  },
+})
+
 const chapter = computed(() => {
   return course.chapters.find((chapter) => chapter.slug == route.params.chapterSlug)
 })
+
+//bad method
+if(!chapter.value){
+  throw createError({
+    statusCode:404,
+    message:'Chapter not found'
+  })
+}
 const lesson = computed(() => {
   return chapter.value.lessons.find((lesson) => lesson.slug == route.params.lessonSlug)
 })
+
+//bad method
+if(!lesson.value){
+  throw createError({
+    statusCode:404,
+    message:'Lesson not found'
+  })
+}
 const title = computed(() => {
   return chapter.value.title + "-" + lesson.value.title
 })
