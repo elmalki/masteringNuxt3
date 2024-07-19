@@ -6,6 +6,9 @@
   </div>
 </template>
 <script setup lang="ts">
+definePageMeta({
+  middleware: 'auth'
+})
 /*
 using composable to use layouts
 definePageMeta({

@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   modules: ["@vueuse/nuxt", "@nuxtjs/supabase"],
   css: ["~/assets/css/main.css"],
   supabase: {
-    redirect: false,
+   redirect: false,
   },
   postcss: {
     plugins: {
