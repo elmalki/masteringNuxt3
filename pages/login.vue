@@ -12,16 +12,13 @@
   </div>
 </template>
 <script setup lang="ts">
-const {title} = useCourse();
+const { title } = useCourse();
 const supabase = useSupabaseClient();
 const user_data = null
 let show = ref(false)
 const login = async () => {
-  const {error,data} = await supabase.auth.signInWithOAuth({
+  const { error, data } = await supabase.auth.signInWithOAuth({
     provider: 'github',
-   options:{
-     //redirectTo:'http://localhost:3000/'
-   }
   });
   if (error)
     console.error(error)

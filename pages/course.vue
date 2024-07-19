@@ -1,11 +1,12 @@
 <template>
   <div class="flex flex-col items-center w-full h-full min-h-screen p-12">
-    <div class="mb-12 prose">
-      <h1>
+    <div class="mb-12 prose flex flex-row">
+      <h1 class="text-3xl">
         <span class="font-medium">
           <span class="font-bold text-6xl text-orange-800">{{ title }}</span>
         </span>
       </h1>
+      <user-card />
     </div>
 
     <div class="flex flex-row justify-center flex-grow">

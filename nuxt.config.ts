@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@vueuse/nuxt", "@nuxtjs/supabase"],
   css: ["~/assets/css/main.css"],
+  supabase: {
+    redirect: false,
+  },
   postcss: {
     plugins: {
       tailwindcss: {},
