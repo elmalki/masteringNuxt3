@@ -1,8 +1,9 @@
 <script setup lang="ts">
 //import {useLocalStorage} from "@vueuse/core";
-
 const course = useCourse();
 const route = useRoute();
+const { chapterSlug, lessonSlug } = route.params;
+const lesson = await useLesson(chapterSlug, lessonSlug);
 //this is the best way we should remove the otherone
 definePageMeta({
   middleware: [ async function ({params}, from) {
@@ -38,7 +39,7 @@ if (!chapter.value) {
     message: 'Chapter not found'
   })
 }
-const lesson = computed(() => {
+/*const lesson = computed(() => {
   return chapter.value.lessons.find((lesson) => lesson.slug == route.params.lessonSlug)
 })
 
@@ -48,7 +49,7 @@ if (!lesson.value) {
     statusCode: 404,
     message: 'Lesson not found'
   })
-}
+}*/
 const title = computed(() => {
   return chapter.value.title + "-" + lesson.value.title
 })
